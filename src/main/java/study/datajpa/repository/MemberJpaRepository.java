@@ -42,6 +42,13 @@ public class MemberJpaRepository {
         return em.find(Member.class, id);
     }
 
+    public List<Member> findByUsernameAndAgeGreaterThan(String username, int age) {
+        return em.createQuery("select m from Member m where m.username =: and m.age > :age")
+                .setParameter("username",username)
+                .setParameter("age",age)
+                .getResultList();
+    }
+
     // 업데이트는 필요없다.
     // 객체를 변경하면 그냥 수정되는 것을 인지해서 알아서 update 쿼리를 보낸다.
 }
