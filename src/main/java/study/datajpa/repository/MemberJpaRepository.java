@@ -49,6 +49,12 @@ public class MemberJpaRepository {
                 .getResultList();
     }
 
+    public List<Member> findByUsername(String username){
+        return em.createNamedQuery("Member.findByUsername", Member.class)
+                .setParameter("username","회원1")
+                .getResultList();
+    }
+
     // 업데이트는 필요없다.
     // 객체를 변경하면 그냥 수정되는 것을 인지해서 알아서 update 쿼리를 보낸다.
 }
