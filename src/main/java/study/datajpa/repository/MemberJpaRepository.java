@@ -34,7 +34,7 @@ public class MemberJpaRepository {
         return Optional.ofNullable(member);
     }
 
-    public long count(){
+    public long count() {
         return em.createQuery("select count(m) from Member m", Long.class).getSingleResult();
     }
 
@@ -44,15 +44,29 @@ public class MemberJpaRepository {
 
     public List<Member> findByUsernameAndAgeGreaterThan(String username, int age) {
         return em.createQuery("select m from Member m where m.username =: and m.age > :age")
-                .setParameter("username",username)
-                .setParameter("age",age)
+                .setParameter("username", username)
+                .setParameter("age", age)
                 .getResultList();
     }
 
-    public List<Member> findByUsername(String username){
+    public List<Member> findByUsername(String username) {
         return em.createNamedQuery("Member.findByUsername", Member.class)
-                .setParameter("username","회원1")
+                .setParameter("username", "회원1")
                 .getResultList();
+    }
+
+    public List<Member> findByPage(int age, int offset, int limit) {
+        return em.createQuery("select m from Member m where m.age = :age order by m.username desc")
+                .setParameter("age", age)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    public long totalCount(int age){
+        return em.createQuery("select count(m) from Member m where m.age = :age", Long.class)
+                .setParameter("age",age)
+                .getSingleResult();
     }
 
     // 업데이트는 필요없다.
